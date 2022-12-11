@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb-deployment
+spec: 
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: mariadb
+  template: 
+    metadata:
+      labels:
+        app: mariadb 
+    spec: 
+      containers: 
+      - name: mariadb
+        image: mariadb
+        ports:
+        - containerPort: 3306 
+        env:
+        - name: MARIADB_ALLOW_EMPTY_ROOT_PASSWORD
+          value: "0" 
+        - name: MARIADB_ROOT_PASSWORD
+          value: secret
+        volumeMounts:
+        - name: mysql-initdb
+          mountPath: /docker-entrypoint-initdb.d
+        - mountPath: "/var/lib/mysql"
+          subPath: "mysql"
+          name: mysql-data
+      volumes:
+        - name: mysql-initdb
+          configMap:
+            name: mysql-initdb-config
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: mysql-data-disk

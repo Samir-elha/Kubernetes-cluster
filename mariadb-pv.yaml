@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-data-disk
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 0.5Gi
+  accessModes:
+  - ReadWriteOnce
+  hostPath:
+    path: "/home/ubuntu/Project/db"

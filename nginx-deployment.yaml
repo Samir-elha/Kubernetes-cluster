@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maintenance-nginx
+spec:
+  selector:
+    matchLabels:
+      run: maintenance-nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: maintenance-nginx
+    spec:
+      containers:
+        - image: nginx:1.18
+          name: maintenance-nginx
+          ports:
+          - containerPort: 443
